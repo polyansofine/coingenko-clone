@@ -64,7 +64,7 @@ function CoinListHeader(props) {
           delay={300}
           className="text-16 md:text-24 mx-12 font-semibold"
         >
-          Coins
+          Digital Assets
         </Typography>
       </div>
 
@@ -79,7 +79,7 @@ function CoinListHeader(props) {
             <Icon color="action">search</Icon>
 
             <Input
-              placeholder="Search"
+              placeholder="Hit search button for the results"
               className="flex flex-1 mx-8"
               disableUnderline
               fullWidth
@@ -89,10 +89,15 @@ function CoinListHeader(props) {
               }}
               onChange={(ev) => dispatch(setCoinsSearchText(ev))}
             />
+            <Button
+              className="shadow-2"
+              onClick={handleSearch}
+              color="secondary"
+              variant="contained"
+            >
+              Search
+            </Button>
           </Paper>
-          <Button onClick={handleSearch} variant="contained">
-            Search
-          </Button>
         </ThemeProvider>
       </div>
     </div>

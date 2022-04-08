@@ -1,7 +1,7 @@
-import CoinList from './CoinList';
+import Home from './Home';
 // import CoinListPage from "./CoinLlist";
 
-const CoinListConfig = {
+const HomeConfig = {
   settings: {
     layout: {
       config: {},
@@ -9,13 +9,13 @@ const CoinListConfig = {
   },
   routes: [
     {
-      path: '/assets',
-      component: CoinList,
+      path: '/home',
+      component: Home,
     },
   ],
 };
 
-export default CoinListConfig;
+export default HomeConfig;
 
 /**
  * Lazy load Example

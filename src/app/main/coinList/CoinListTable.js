@@ -61,6 +61,7 @@ function CoinListTable(props) {
     setPage(0);
   }, [search]);
   function handleRequestSort(event, property) {
+    console.log('property=', property);
     const id = property;
     let direction = 'desc';
 
@@ -154,18 +155,34 @@ function CoinListTable(props) {
               data,
               [
                 (o) => {
+                  console.log('0==', order.id);
                   switch (order.id) {
                     case 'id': {
-                      return parseInt(o.id, 10);
+                      return o.market_cap_rank;
                     }
-                    case 'customer': {
-                      return o.customer.firstName;
+                    case 'coin_name': {
+                      return o.name;
                     }
-                    case 'payment': {
-                      return o.payment.method;
+                    case 'symbol': {
+                      return o.symbol;
                     }
-                    case 'status': {
-                      return o.status[0].name;
+                    case 'price': {
+                      return o.current_price;
+                    }
+                    case '1h': {
+                      return o.price_change_percentage_1h_in_currency;
+                    }
+                    case '24h': {
+                      return o.price_change_percentage_24h_in_currency;
+                    }
+                    case '7d': {
+                      return o.price_change_percentage_7d_in_currency;
+                    }
+                    case '24volume': {
+                      return o.total_volume;
+                    }
+                    case 'mkt': {
+                      return o.market_cap;
                     }
                     default: {
                       return o[order.id];
@@ -189,16 +206,6 @@ function CoinListTable(props) {
                     selected={isSelected}
                     onClick={(event) => handleClick(n)}
                   >
-                    <TableCell
-                      className="w-40 md:w-64 text-center"
-                      padding="none"
-                    >
-                      <Checkbox
-                        checked={isSelected}
-                        onClick={(event) => event.stopPropagation()}
-                        onChange={(event) => handleCheck(event, n.id)}
-                      />
-                    </TableCell>
                     <TableCell
                       className="w-40 md:w-64 text-center"
                       padding="none"

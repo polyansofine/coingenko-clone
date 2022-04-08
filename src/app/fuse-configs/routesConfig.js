@@ -3,8 +3,9 @@ import FuseUtils from '@fuse/utils';
 import FuseLoading from '@fuse/core/FuseLoading';
 import Error404Page from 'app/main/404/Error404Page';
 import CoinListConfig from 'app/main/coinList/CoinListConfig';
+import HomeConfig from 'app/main/home/HomeConfig';
 
-const routeConfigs = [CoinListConfig];
+const routeConfigs = [CoinListConfig, HomeConfig];
 
 const routes = [
   // if you want to make whole app auth protected by default change defaultAuth for example:
@@ -15,7 +16,7 @@ const routes = [
   {
     exact: true,
     path: '/',
-    component: () => <Redirect to="/coin_list" />,
+    component: () => <Redirect to="/home" />,
   },
   {
     path: '/loading',

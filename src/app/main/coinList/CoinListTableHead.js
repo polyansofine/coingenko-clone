@@ -22,14 +22,14 @@ const rows = [
     id: 'id',
     align: 'right',
     disablePadding: true,
-    label: 'ID',
+    label: '#',
     sort: true,
   },
   {
     id: 'coin_name',
     align: 'left',
     disablePadding: false,
-    label: 'CoinName',
+    label: 'Asset',
     sort: true,
   },
   {
@@ -122,50 +122,6 @@ function OrdersTableHead(props) {
   return (
     <TableHead>
       <TableRow className="h-48 sm:h-64">
-        <TableCell padding="none" className="w-40 md:w-64 text-center z-99">
-          <Checkbox
-            indeterminate={numSelected > 0 && numSelected < props.rowCount}
-            checked={props.rowCount !== 0 && numSelected === props.rowCount}
-            onChange={props.onSelectAllClick}
-          />
-          {numSelected > 0 && (
-            <div
-              className={clsx(
-                'flex items-center justify-center absolute w-64 top-0 ltr:left-0 rtl:right-0 mx-56 h-64 z-10 border-b-1',
-                classes.actionsButtonWrapper
-              )}
-            >
-              <IconButton
-                aria-owns={selectedOrdersMenu ? 'selectedOrdersMenu' : null}
-                aria-haspopup="true"
-                onClick={openSelectedOrdersMenu}
-              >
-                <Icon>more_horiz</Icon>
-              </IconButton>
-              <Menu
-                id="selectedOrdersMenu"
-                anchorEl={selectedOrdersMenu}
-                open={Boolean(selectedOrdersMenu)}
-                onClose={closeSelectedOrdersMenu}
-              >
-                {/* <MenuList>
-                  <MenuItem
-                    onClick={() => {
-                      dispatch(removeOrders(selectedOrderIds));
-                      props.onMenuItemClick();
-                      closeSelectedOrdersMenu();
-                    }}
-                  >
-                    <ListItemIcon className="min-w-40">
-                      <Icon>delete</Icon>
-                    </ListItemIcon>
-                    <ListItemText primary="Remove" />
-                  </MenuItem>
-                </MenuList> */}
-              </Menu>
-            </div>
-          )}
-        </TableCell>
         {rows.map((row) => {
           return (
             <TableCell
