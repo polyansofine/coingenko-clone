@@ -90,7 +90,9 @@ function CoinListHeader(props) {
               onChange={(ev) => dispatch(setCoinsSearchText(ev))}
             />
           </Paper>
-          <Button onClick={handleSearch}>Search</Button>
+          <Button onClick={handleSearch} variant="contained">
+            Search
+          </Button>
         </ThemeProvider>
       </div>
     </div>
