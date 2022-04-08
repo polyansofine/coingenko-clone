@@ -83,7 +83,7 @@ const rows = [
   },
   {
     id: 'last7days',
-    align: 'right',
+    align: 'center',
     disablePadding: false,
     label: 'Last 7 Days',
     sort: true,
