@@ -161,7 +161,7 @@ function CoinListTable(props) {
                       return o.market_cap_rank;
                     }
                     case 'coin_name': {
-                      return o.name;
+                      return o.name.toUpperCase();
                     }
                     case 'symbol': {
                       return o.symbol;
@@ -356,6 +356,7 @@ function CoinListTable(props) {
           filterCoinList.length > 0 ? filterCoinList.length : coinsList.length
         }
         rowsPerPage={search ? 50 : rowsPerPage}
+        labelRowsPerPage={<Typography>Assets per page</Typography>}
         page={page}
         backIconButtonProps={{
           'aria-label': 'Previous Page',

@@ -86,7 +86,7 @@ const rows = [
     align: 'center',
     disablePadding: false,
     label: 'Last 7 Days',
-    sort: true,
+    sort: false,
   },
 ];
 
@@ -133,7 +133,7 @@ function OrdersTableHead(props) {
                 props.order.id === row.id ? props.order.direction : false
               }
             >
-              {row.sort && (
+              {row.sort ? (
                 <Tooltip
                   title="Sort"
                   placement={
@@ -150,6 +150,8 @@ function OrdersTableHead(props) {
                     {row.label}
                   </TableSortLabel>
                 </Tooltip>
+              ) : (
+                row.label
               )}
             </TableCell>
           );
