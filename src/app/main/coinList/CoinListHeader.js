@@ -6,12 +6,45 @@ import Typography from '@material-ui/core/Typography';
 import { motion } from 'framer-motion';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectMainTheme } from 'app/store/fuse/settingsSlice';
-import { setCoinsSearchText } from './store/coinsSlice';
+import { Button } from '@material-ui/core';
+import FuseUtils from '@fuse/utils';
+import { useEffect, useState } from 'react';
+
+import { setCoinsSearchText, getCoins } from './store/coinsSlice';
+import {
+  selectCoinsList,
+  setFilterCoinList,
+  onSearch,
+} from './store/coinsListSlice';
 
 function CoinListHeader(props) {
   const dispatch = useDispatch();
   const searchText = useSelector(({ coinList }) => coinList.coins.searchText);
   const mainTheme = useSelector(selectMainTheme);
+  const coinsList = useSelector(selectCoinsList);
+  const [coinsData, setCoinsData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    if (searchText.length !== 0) {
+      const filterCoins = FuseUtils.filterArrayByString(coinsList, searchText);
+      dispatch(setFilterCoinList(filterCoins));
+    } else {
+      dispatch(setFilterCoinList([]));
+    }
+  }, [coinsList, searchText]);
+  // eslint-disable-next-line consistent-return
+  const handleSearch = () => {
+    if (searchText.length !== 0) {
+      // setCoinsData(FuseUtils.filterArrayByString(coinsList, searchText));
+      const filterCoins = FuseUtils.filterArrayByString(coinsList, searchText);
+      dispatch(getCoins(0, filterCoins)).then(() => setLoading(false));
+      dispatch(onSearch(true));
+    } else {
+      dispatch(getCoins(0)).then(() => setLoading(false));
+      dispatch(onSearch(false));
+    }
+  };
+  // console.log('coinsdata==', coinsData);
 
   return (
     <div className="flex flex-1 w-full items-center justify-between">
@@ -57,6 +90,7 @@ function CoinListHeader(props) {
               onChange={(ev) => dispatch(setCoinsSearchText(ev))}
             />
           </Paper>
+          <Button onClick={handleSearch}>Search</Button>
         </ThemeProvider>
       </div>
     </div>

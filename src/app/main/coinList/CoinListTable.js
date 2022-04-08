@@ -18,16 +18,24 @@ import FuseLoading from '@fuse/core/FuseLoading';
 import { Grid } from '@material-ui/core';
 import { selectCoins, getCoins } from './store/coinsSlice';
 import CoinListTableHead from './CoinListTableHead';
+import { getCoinsList, selectCoinsList } from './store/coinsListSlice';
 
 function CoinListTable(props) {
   const dispatch = useDispatch();
   const orders = useSelector(selectCoins);
+  const coinsList = useSelector(selectCoinsList);
 
-  const searchText = useSelector(({ coinList }) => coinList.coins.searchText);
+  const searchText = useSelector(
+    ({ coinList }) => coinList.coinsList.searchText
+  );
+  const { filterCoinList, search } = useSelector(
+    ({ coinList }) => coinList.coinsList
+  );
 
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState([]);
   const [data, setData] = useState(orders);
+  // const [coinsData, setCoinsData] = useState(coinsList);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(100);
   const [order, setOrder] = useState({
@@ -36,18 +44,22 @@ function CoinListTable(props) {
   });
 
   useEffect(() => {
-    dispatch(getCoins(page)).then(() => setLoading(false));
+    dispatch(getCoinsList()).then(() => {
+      dispatch(getCoins(page)).then(() => setLoading(false));
+    });
   }, [dispatch, page]);
 
   useEffect(() => {
-    if (searchText.length !== 0) {
-      setData(FuseUtils.filterArrayByString(orders, searchText));
-      setPage(0);
-    } else {
-      setData(orders);
-    }
+    // if (searchText.length !== 0) {
+    //   setData(FuseUtils.filterArrayByString(orders, searchText));
+    //   setPage(0);
+    // } else {
+    setData(orders);
+    // }
   }, [orders, searchText]);
-
+  useEffect(() => {
+    setPage(0);
+  }, [search]);
   function handleRequestSort(event, property) {
     const id = property;
     let direction = 'desc';
@@ -123,7 +135,6 @@ function CoinListTable(props) {
       </motion.div>
     );
   }
-  console.log('ddd===', data);
 
   return (
     <div className="w-full flex flex-col">
@@ -164,7 +175,7 @@ function CoinListTable(props) {
               ],
               [order.direction]
             )
-              .slice(0, rowsPerPage)
+              .slice(0, search ? 50 : rowsPerPage)
               .map((n, index) => {
                 const isSelected = selected.indexOf(n.id) !== -1;
                 return (
@@ -233,7 +244,7 @@ function CoinListTable(props) {
                       align="right"
                     >
                       <span>$</span>
-                      {n.current_price.toLocaleString()}
+                      {n.current_price?.toLocaleString()}
                     </TableCell>
 
                     <TableCell
@@ -298,7 +309,7 @@ function CoinListTable(props) {
                       align="right"
                     >
                       <span>$</span>
-                      {n.total_volume.toLocaleString()}
+                      {n.total_volume?.toLocaleString()}
                     </TableCell>
                     <TableCell
                       className="p-4 md:p-16"
@@ -307,7 +318,7 @@ function CoinListTable(props) {
                       align="right"
                     >
                       <span>$</span>
-                      {n.market_cap.toLocaleString()}
+                      {n.market_cap?.toLocaleString()}
                     </TableCell>
                     <TableCell
                       className="p-4 md:p-16"
@@ -334,8 +345,10 @@ function CoinListTable(props) {
       <TablePagination
         className="flex-shrink-0 border-t-1"
         component="div"
-        count={13600}
-        rowsPerPage={rowsPerPage}
+        count={
+          filterCoinList.length > 0 ? filterCoinList.length : coinsList.length
+        }
+        rowsPerPage={search ? 50 : rowsPerPage}
         page={page}
         backIconButtonProps={{
           'aria-label': 'Previous Page',
